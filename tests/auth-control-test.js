@@ -7,17 +7,6 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use('/', index);
 
-test('log in route works', (done) => {
-  request(app)
-    .post('/log-in')
-    .type('form')
-    .send({
-      username: '',
-      password: ''
-    })
-    .expect(200, done);
-});
-
 test('sign up routes works', (done) => {
   request(app)
     .post('/sign-up')
@@ -26,6 +15,23 @@ test('sign up routes works', (done) => {
       username: '',
       password: '',
       confirm_password: ''
+    })
+    .then(() => {
+      request(app).post('/log-in').type('form').send({
+        username: '',
+        password: ''
+      });
+    })
+    .expect(200, done);
+});
+
+test('log in route works', (done) => {
+  request(app)
+    .post('/log-in')
+    .type('form')
+    .send({
+      username: '',
+      password: ''
     })
     .expect(200, done);
 });
