@@ -57,12 +57,12 @@ exports.sign_up = [
 ];
 
 exports.log_in = asyncHandler(async (req, res, next) => {
-  const { username, password } = req.body;
-  const user = await User.find({ username: username });
+  const data = await User.find({ username: req.body.username });
+  const user = data[0];
   if (!user) {
     return res.status(401).json({ msg: 'Username not found' });
   }
-  const match = await bcrypt.compare(password, user.password);
+  const match = await bcrypt.compare(req.body.password, user.password);
   if (!match) {
     return res.status(401).json({ msg: 'Incorrect password' });
   }
