@@ -52,7 +52,7 @@ exports.sign_up = [
         await user.save();
       });
     }
-    res.status(200).json({});
+    res.status(200).json({ username: user.username });
   })
 ];
 
@@ -66,9 +66,13 @@ exports.log_in = asyncHandler(async (req, res, next) => {
   if (!match) {
     return res.status(401).json({ msg: 'Incorrect password' });
   }
-  const token = jwt.sign({ user }, process.env.SECRET, { expiresIn: '2hr' });
+  const username = user.username;
+  const token = jwt.sign({ username }, process.env.SECRET, {
+    expiresIn: '2hr'
+  });
   return res.status(200).json({
     msg: 'Log in successful',
-    token
+    token,
+    username
   });
 });
