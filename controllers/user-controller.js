@@ -8,7 +8,7 @@ exports.view_user = asyncHandler(async (req, res, next) => {
     res.status(400).json({ msg: 'User not found' });
     return;
   } else {
-    res.status(200).json({ username, password });
+    res.status(200).json({ username: user.username });
     return;
   }
 });
