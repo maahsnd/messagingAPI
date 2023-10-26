@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-function verify(req, res, next) {
+exports.verify = (req, res, next) => {
   let token = req.headers['authorization'];
   token = token.replace(/^Bearer\s+/, '');
 
@@ -21,6 +21,4 @@ function verify(req, res, next) {
       msg: 'Token not provided'
     });
   }
-}
-
-export default verify;
+};
