@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "devstart": "nodemon ./bin/www"
+    "devstart": "nodemon ./bin/www",
+    "test": "jest"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -20,6 +21,7 @@
     "nodemon": "^3.0.1"
   },
   "devDependencies": {
+    "jest": "^29.7.0",
     "mongodb-memory-server": "^9.0.1",
     "supertest": "^6.3.3"
   }

@@ -1,14 +1,14 @@
-const index = require('../routes/users');
+const users = require('../routes/users');
 
 const request = require('supertest');
 const express = require('express');
 const app = express();
-require('../tests/mongoConfigTesting');
+require('./mongoConfigTesting');
 
 app.use(express.urlencoded({ extended: false }));
-app.use('/', index);
+app.use('/', users);
 
-test('sign up route works', (done) => {
+test.only('sign up route works', (done) => {
   request(app)
     .post('/sign-up')
     .type('form')
