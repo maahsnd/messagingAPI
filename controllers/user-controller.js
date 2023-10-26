@@ -21,6 +21,11 @@ exports.edit_user = [
 
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req).errors;
+    const usernameTaken = await User.find({ username: req.body.username });
+    if (usernameTaken) {
+      res.status(401).json([{ error: { msg: 'Username taken' } }]);
+      return;
+    }
     if (errors) {
       res.status(401).json({ errors });
       return;
