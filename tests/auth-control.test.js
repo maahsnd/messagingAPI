@@ -2,8 +2,9 @@ const index = require('../routes/index');
 
 const request = require('supertest');
 const express = require('express');
+const User = require('../models/User');
 const app = express();
-require('./mongoConfigTesting');
+require('../tests/mongoConfigTesting');
 
 app.use(express.urlencoded({ extended: false }));
 app.use('/', index);
