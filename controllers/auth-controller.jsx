@@ -37,14 +37,14 @@ exports.sign_up = [
     .escape(),
 
   asyncHandler(async (req, res, next) => {
-    const errors = validationResult(req);
+    const errors = validationResult(req).errors;
 
     const user = new User({
       username: req.body.username,
       password: req.body.password
     });
-    if (!errors.isEmpty()) {
-      res.json(errors.array());
+    if (errors) {
+      res.status(401).json({ errors });
       return;
     } else {
       bcrypt.hash(user.password, 10, async (err, hashedPassword) => {
