@@ -4,8 +4,8 @@ const userController = require('../controllers/user-controller');
 const Jwt = require('../verifyJWT');
 
 /* GET users listing. */
-router.get('/:id', Jwt.verify, userController.view_user);
+router.get('/:username', Jwt.verify, userController.view_user);
 
-router.post('/:id', Jwt.verify, userController.edit_user);
+router.post('/:username', Jwt.verify, userController.edit_user);
 
 module.exports = router;
