@@ -43,7 +43,7 @@ exports.sign_up = [
       username: req.body.username,
       password: req.body.password
     });
-    if (errors) {
+    if (errors.length) {
       res.status(401).json({ errors });
       return;
     } else {
