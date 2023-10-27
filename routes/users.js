@@ -18,7 +18,7 @@ router.post(
 router.post(
   '/:username/threads',
   Jwt.verify,
-  msgController.new_message_and_thread
+  msgController.new_thread_and_message
 );
 
 module.exports = router;
