@@ -9,6 +9,16 @@ router.get('/:username', Jwt.verify, userController.view_user);
 
 router.post('/:username', Jwt.verify, userController.edit_user);
 
-router.post('/:username/messages', Jwt.verify, msgController.new_message);
+router.post(
+  '/:username/threads/messages',
+  Jwt.verify,
+  msgController.new_message
+);
+
+router.post(
+  '/:username/threads',
+  Jwt.verify,
+  msgController.new_message_and_thread
+);
 
 module.exports = router;
