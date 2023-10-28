@@ -73,6 +73,6 @@ exports.log_in = asyncHandler(async (req, res, next) => {
   return res.status(200).json({
     msg: 'Log in successful',
     token,
-    username
+    userId: user._id
   });
 });
