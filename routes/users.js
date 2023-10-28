@@ -21,4 +21,6 @@ router.post(
   msgController.new_thread_and_message
 );
 
+router.get('/users', Jwt.verify, userController.get_contacts)
+
 module.exports = router;
