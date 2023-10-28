@@ -45,3 +45,14 @@ exports.edit_user = [
     res.status(200).json({ username: edited_user.username });
   })
 ];
+
+exports.get_contacts = asyncHandler( async (req,res, next) => {
+    const users = User.find({}, {username: 1}).sort({username: 1}).exec();
+    if (!users) {
+        res.status(400).json({ msg: 'User not found' });
+        return;
+      } else {
+        return res.status(200).json({ users });
+      }
+
+})
