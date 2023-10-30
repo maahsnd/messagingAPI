@@ -46,13 +46,14 @@ exports.edit_user = [
   })
 ];
 
-exports.get_contacts = asyncHandler( async (req,res, next) => {
-    const users = await User.find({}, {username: 1}).sort({username: 1}).exec();
-    if (!users) {
-        res.status(400).json({ msg: 'User not found' });
-        return;
-      } else {
-        return res.status(200).json( users );
-      }
-
-})
+exports.get_contacts = asyncHandler(async (req, res, next) => {
+  const users = await User.find({}, { username: 1 })
+    .sort({ username: 1 })
+    .exec();
+  if (!users) {
+    res.status(400).json({ msg: 'User not found' });
+    return;
+  } else {
+    return res.status(200).json(users);
+  }
+});
