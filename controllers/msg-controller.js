@@ -76,7 +76,7 @@ exports.new_thread_and_message = [
         thread.name = req.body.name;
       }
       await thread.save();
-      return res.status(200);
+      return res.status(200).json(thread);
     } catch (err) {
       console.error(err);
       errors.push(err);
@@ -87,7 +87,13 @@ exports.new_thread_and_message = [
 
 exports.get_threads = asyncHandler(async (req, res, next) => {
   const threads = await Thread.find({ users: { $in: [req.params.username] } })
-    .sort({ timestamp: 1 })
+    .populate('users')
+    .populate({
+      path: 'messages',
+      populate: {
+        path: 'from'
+      }
+    })
     .exec();
   if (!threads) {
     return res.status(400).json({ msg: 'No threads found' });
