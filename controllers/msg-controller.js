@@ -19,7 +19,13 @@ exports.new_message = [
       return;
     }
     //all must be passed via req.body
-    const { text, from, to, thread } = req.body;
+    const { text, from, thread } = req.body;
+    //remove sender from list of users to get recipients
+    const to = req.body.to.filter((user) => {
+      if (user._id != from._id) {
+        return user;
+      }
+    });
     const message = new Message({
       text: text,
       from: from,
@@ -29,11 +35,22 @@ exports.new_message = [
     try {
       await message.save();
       await Thread.findOneAndUpdate(
-        { _id: thread._id },
+        { _id: thread },
         { $push: { messages: message } },
         {}
       );
-      return res.status(200).json({ message });
+      const updatedThread = await Thread.findOne({
+        _id: thread
+      })
+        .populate('users')
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'from'
+          }
+        })
+        .exec();
+      return res.status(200).json(updatedThread);
     } catch (err) {
       console.error(err);
       errors.push(err);
