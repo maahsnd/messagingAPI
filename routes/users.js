@@ -15,12 +15,14 @@ router.post(
   msgController.new_message
 );
 
+router.get('/:username/threads', Jwt.verify, msgController.get_threads);
+
 router.post(
   '/:username/threads',
   Jwt.verify,
   msgController.new_thread_and_message
 );
 
-router.get('/', Jwt.verify, userController.get_contacts)
+router.get('/', Jwt.verify, userController.get_contacts);
 
 module.exports = router;
