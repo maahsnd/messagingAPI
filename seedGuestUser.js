@@ -52,23 +52,24 @@ async function createRandomUser() {
         users: usersArray,
         messages: []
     })
-    console.log(thread)
     threads.push(thread);
     await thread.save()
     return thread
   }
 
   async function createMessage( threadIndex, from, toArray) {
-    let thread = threads[threadIndex]
     const message = new Message({
         text: faker.word.words({ count: { min: 3, max: 30 } }),
         from: from,
         to: toArray,
-        thread: thread
+        thread: threads[threadIndex]
     })
-    thread.messages.push(message);
+    if (toArray.length > 1) {
+        console.log(message)
+    }
+    threads[threadIndex].messages.push(message);
     await message.save()
-    await thread.save()
+    await threads[threadIndex].save()
   }
 
   async function seed() {
@@ -101,13 +102,15 @@ async function createRandomUser() {
       for (let i = 0; i < userCount/2; i++) {
         const thread = await createThread([users[1], users[3], users[5], guestUser]);
         for (let j = 0; j < 5; j++) {
-            await createMessage(i, guestUser, convoUsers)
+            // plus 5 to account for 1-1 threads previously created
+            await createMessage(i + 5, guestUser, convoUsers)
             let recipients = convoUsers.filter((element, index) => 
                 index !==  convoUsers[j % 3]
             )
             recipients.push(guestUser)
-            await createMessage(i, convoUsers[j % 3], recipients);
+            await createMessage(i + 5, convoUsers[j % 3], recipients);
         }
+        console.log(thread)
         console.log('multi-user thread created')
       }
 
