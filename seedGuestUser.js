@@ -20,7 +20,7 @@ function getRandomElementFromArray(arr) {
   }
 
   function createRandomArray(arr) {
-    const newArrayLength = Math.floor(Math.random() * (userCount/2 - 2 + 1)) + 2; // Random length between 2 and 6
+    const newArrayLength = Math.floor(Math.random() * 3) + 5; // Random length between 2 and 6
     const newArray = [];
   
     // Shuffle the original array to ensure randomness
