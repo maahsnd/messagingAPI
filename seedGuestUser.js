@@ -18,6 +18,20 @@ function getRandomElementFromArray(arr) {
     return arr[randomIndex];
   }
 
+  function createRandomArray(arr) {
+    const newArrayLength = Math.floor(Math.random() * (6 - 2 + 1)) + 2; // Random length between 2 and 6
+    const newArray = [];
+  
+    // Shuffle the original array to ensure randomness
+    const shuffledArray = arr.sort(() => Math.random() - 0.5);
+  
+    for (let i = 0; i < Math.min(newArrayLength, shuffledArray.length); i++) {
+      newArray.push(shuffledArray[i]);
+    }
+  
+    return newArray;
+  }
+
 async function createRandomUser() {
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-_=+[\]{}|;:'",.<>?/]).{8,}$/;
@@ -64,9 +78,6 @@ async function createRandomUser() {
         to: toArray,
         thread: threads[threadIndex]
     })
-    if (toArray.length > 1) {
-        console.log(message)
-    }
     threads[threadIndex].messages.push(message);
     await message.save()
     await threads[threadIndex].save()
@@ -98,19 +109,19 @@ async function createRandomUser() {
 
       console.log('creating multi-user threads')
       //create multi-user threads
-      let convoUsers = [users[1], users[3], users[5]]
+     
       for (let i = 0; i < userCount/2; i++) {
-        const thread = await createThread([users[1], users[3], users[5], guestUser]);
-        for (let j = 0; j < 5; j++) {
+        let convoUsers = createRandomArray(users);
+        convoUsers.push(guestUser)
+        await createThread(convoUsers);
+        for (let j = 0; j < 10; j++) {
             // plus 5 to account for 1-1 threads previously created
-            await createMessage(i + 5, guestUser, convoUsers)
+            let sender = getRandomElementFromArray(convoUsers)
             let recipients = convoUsers.filter((element, index) => 
-                index !==  convoUsers[j % 3]
+                index !==  sender
             )
-            recipients.push(guestUser)
-            await createMessage(i + 5, convoUsers[j % 3], recipients);
+            await createMessage(i + 5, sender, recipients);
         }
-        console.log(thread)
         console.log('multi-user thread created')
       }
 
