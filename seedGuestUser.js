@@ -8,6 +8,7 @@ require('./mongoConfig');
 
 let users = []
 let threads = []
+const userCount = 10;
 
 function getRandomElementFromArray(arr) {
     if (arr.length === 0) {
@@ -19,7 +20,7 @@ function getRandomElementFromArray(arr) {
   }
 
   function createRandomArray(arr) {
-    const newArrayLength = Math.floor(Math.random() * (6 - 2 + 1)) + 2; // Random length between 2 and 6
+    const newArrayLength = Math.floor(Math.random() * (userCount/2 - 2 + 1)) + 2; // Random length between 2 and 6
     const newArray = [];
   
     // Shuffle the original array to ensure randomness
@@ -84,8 +85,7 @@ async function createRandomUser() {
   }
 
   async function seed() {
-    const userCount = 10;
-
+  
     console.log('creating users')
     for (let i = 0; i < userCount; i++) {
         const user = await createRandomUser();
@@ -97,9 +97,10 @@ async function createRandomUser() {
 
       console.log('creating 1-1 threads')
       //create 1-1 threads
+      let dialogueUsers = createRandomArray(users);
       for (let i = 0; i < userCount/2; i++) {
-        const user = getRandomElementFromArray(users)
-        const thread = await createThread([guestUser, user]);
+        let user = dialogueUsers[i]
+        await createThread([guestUser, user]);
         for (let j = 0; j < 5; j++) {
             await createMessage(i, guestUser, [user])
             await createMessage(i, user, [guestUser]);
