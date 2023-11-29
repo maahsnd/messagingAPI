@@ -110,7 +110,7 @@ exports.get_threads = asyncHandler(async (req, res, next) => {
       populate: {
         path: 'from'
       }
-    })
+    }).sort('-time')
     .exec();
   if (!threads) {
     return res.status(400).json({ msg: 'No threads found' });
